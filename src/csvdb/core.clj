@@ -38,8 +38,8 @@
 ;;
 ;; Hint: let, map, next, table-keys, data-record
 (defn data-table [tbl]
-  (let [body (next tbl)]
-    (map #(data-record (table-keys tbl) %) body)))
+  (let [row (next tbl)]
+    (map #(data-record (table-keys tbl) %) row)))
 
 ;; (str-field-to-int :id {:surname "Ivanov", :year "1996", :id "1"})
 ;; => {:surname "Ivanov", :year "1996", :id 1}
