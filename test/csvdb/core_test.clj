@@ -27,15 +27,31 @@
       (is (= (str-field-to-int :id {:surname "Ivanov", :year "1996", :id "1"})
              {:surname "Ivanov", :year "1996", :id 1}))))
 
+(deftest where*-test-when-nil
+  (testing
+    (is (= (vec (where* student nil))
+           (vec '({:surname "Ivanov", :year 1998, :id 1} {:surname "Petrov", :year 1997, :id 2} {:surname "Sidorov", :year 1996, :id 3}))))))
+
+
 (deftest where*-test
   (testing
       (is (= (vec (where* student (fn [rec] (> (:id rec) 1))))
              (vec '({:surname "Petrov", :year 1997, :id 2} {:surname "Sidorov", :year 1996, :id 3}))))))
 
+(deftest limit*-test-when-nil
+  (testing
+    (is (= (vec (limit* student nil))
+           (vec '({:surname "Ivanov", :year 1998, :id 1} {:surname "Petrov", :year 1997, :id 2} {:surname "Sidorov", :year 1996, :id 3}))))))
+
 (deftest limit*-test
   (testing
       (is (= (vec (limit* student 1))
              (vec '({:surname "Ivanov", :year 1998, :id 1}))))))
+
+(deftest limit*-test-when-nil
+  (testing
+    (is (= (vec (limit* student nil))
+           (vec '({:surname "Ivanov", :year 1998, :id 1} {:surname "Petrov", :year 1997, :id 2} {:surname "Sidorov", :year 1996, :id 3}))))))
 
 (deftest order-by*-test
   (testing
