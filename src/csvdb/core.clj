@@ -95,12 +95,21 @@
 ;; Hint: reduce, conj, merge, first, filter, get
 ;; Here column1 belongs to data1, column2 belongs to data2.
 (defn join* [data1 column1 data2 column2]
-  ;; 1. Start collecting results from empty collection.
-  ;; 2. Go through each element of data1.
-  ;; 3. For each element of data1 (lets call it element1) find all elements of data2 (lets call each as element2) where column1 = column2.
-  ;; 4. Use function 'merge' and merge element1 with each element2.
-  ;; 5. Collect merged elements.
-  :ImplementMe!)
+  (vec (for
+    [d1 data1
+     d2 data2
+     :let [result {}]
+     :when (= (column1 d1) (column2 d2))]
+     (conj result (merge d2 d1))
+  )
+))
+
+;; 1. Start collecting results from empty collection.
+;; 2. Go through each element of data1.
+;; 3. For each element of data1 (lets call it element1) find all elements of data2
+;;    (lets call each as element2) where column1 = column2.
+;; 4. Use function 'merge' and merge element1 with each element2.
+;; 5. Collect merged elements.
 
 ;; (perform-joins student-subject [[:student_id student :id] [:subject_id subject :id]])
 ;; => [{:subject "Math", :subject_id 1, :surname "Ivanov", :year 1998, :student_id 1, :id 1} {:subject "Math", :subject_id 1, :surname "Petrov", :year 1997, :student_id 2, :id 2} {:subject "CS", :subject_id 2, :surname "Petrov", :year 1997, :student_id 2, :id 2} {:subject "CS", :subject_id 2, :surname "Sidorov", :year 1996, :student_id 3, :id 3}]
@@ -141,7 +150,11 @@
 ;; => ({:id 3, :year 1996, :surname "Sidorov"} {:id 2, :year 1997, :surname "Petrov"})
 
 (select student-subject :joins [[:student_id student :id] [:subject_id subject :id]])
-;; => [{:subject "Math", :subject_id 1, :surname "Ivanov", :year 1998, :student_id 1, :id 1} {:subject "Math", :subject_id 1, :surname "Petrov", :year 1997, :student_id 2, :id 2} {:subject "CS", :subject_id 2, :surname "Petrov", :year 1997, :student_id 2, :id 2} {:subject "CS", :subject_id 2, :surname "Sidorov", :year 1996, :student_id 3, :id 3}]
+;; => [{:subject "Math", :subject_id 1, :surname "Ivanov", :year 1998, :student_id 1, :id 1}
+;;     {:subject "Math", :subject_id 1, :surname "Petrov", :year 1997, :student_id 2, :id 2}
+;;     {:subject "CS", :subject_id 2, :surname "Petrov", :year 1997, :student_id 2, :id 2}
+;;     {:subject "CS", :subject_id 2, :surname "Sidorov", :year 1996, :student_id 3, :id 3}]
 
 (select student-subject :limit 2 :joins [[:student_id student :id] [:subject_id subject :id]])
-;; => ({:subject "Math", :subject_id 1, :surname "Ivanov", :year 1998, :student_id 1, :id 1} {:subject "Math", :subject_id 1, :surname "Petrov", :year 1997, :student_id 2, :id 2})
+; => ({:subject "Math", :subject_id 1, :surname "Ivanov", :year 1998, :student_id 1, :id 1}
+;     {:subject "Math", :subject_id 1, :surname "Petrov", :year 1997, :student_id 2, :id 2})
