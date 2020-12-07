@@ -100,9 +100,7 @@
      d2 data2
      :let [result {}]
      :when (= (column1 d1) (column2 d2))]
-     (conj result (merge d2 d1))
-  )
-))
+     (conj result (merge d2 d1)))))
 
 ;; 1. Start collecting results from empty collection.
 ;; 2. Go through each element of data1.
